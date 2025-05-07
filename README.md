@@ -1,1 +1,1 @@
-# `linprog` -- Linear Programming Problems Solver
+# `linprog` - Linear Programming Problems Solver
