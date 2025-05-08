@@ -1,7 +1,5 @@
 # `linprog` - Linear Programming Problems Solver
 
----
-
 # Project Pipeline
 
 ```

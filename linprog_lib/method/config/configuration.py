@@ -1,4 +1,11 @@
+"""
+This module defines the LinearProgrammingConfig class, which encapsulates the configuration
+for a linear programming problem. It includes methods for initializing the configuration,
+validating inputs, and generating a summary of the problem in a LaTeX-like format.
+"""
+
 from typing import List, Union, Optional
+from linprog_lib.utils.logger import logger
 
 class LinearProgrammingConfig:
     """
@@ -18,6 +25,8 @@ class LinearProgrammingConfig:
                  print_solution: bool = True,
                  print_plot: bool = False,
                  print_tables: bool = False,
+                 print_path: bool = False,
+                 print_plot_path: bool = False,
                  verbose: bool = False):
         """
         Initialize the LinearProgrammingConfig with the given parameters.
@@ -33,24 +42,26 @@ class LinearProgrammingConfig:
             print_solution (bool): Whether to print the solution.
             print_plot (bool): Whether to print plots.
             print_tables (bool): Whether to print tables.
+            print_path (bool): Whether to print the path taken by the algorithm.
+            print_plot_path (bool): Whether to print the plot path.
             verbose (bool): Verbosity level for debugging.
         """
         
         # Validate inputs
         valid_methods = ["geometric", "simplex", "bland", "two_phase"]
         if method not in valid_methods:
-            raise ValueError(f"Invalid method '{method}'. Must be one of {valid_methods}.")
+            logger.warning(f"Invalid method '{method}'. Must be one of {valid_methods}.")
         self.method = method
 
         if objective_type not in ["min", "max"]:
-            raise ValueError("Objective type must be 'min' or 'max'.")
+            logger.warning(f"Invalid objective type '{objective_type}'. Must be 'min' or 'max'.")
         self.objective_type = objective_type
 
         valid_forms = ["general", "standard", "canonical"]
         if problem_form not in valid_forms:
-            raise ValueError(f"Invalid problem form '{problem_form}'. Must be one of {valid_forms}.")
+            logger.warning(f"Invalid problem form '{problem_form}'. Must be one of {valid_forms}.")
         self.problem_form = problem_form
-
+        
         # Objective function coefficients
         self.c = c
         self.A = A
@@ -59,9 +70,17 @@ class LinearProgrammingConfig:
         self.var_bounds = var_bounds if var_bounds else [None] * len(c)
 
         # User preferences
+        if print_plot and len(self.c) > 2:
+            print_plot = False
+            logger.warning("Plotting is only supported for 2D problems.")
+        if print_plot_path and len(self.c) > 2:
+            print_plot_path = False
+            logger.warning("Plotting path is only supported for 2D problems.")
         self.print_solution = print_solution
         self.print_plot = print_plot
         self.print_tables = print_tables
+        self.print_path = print_path
+        self.print_plot_path = print_plot_path
         self.verbose = verbose
 
     def _format_term_for_expression(self, coef: float, var_name: str, is_first_term: bool) -> str:
@@ -154,6 +173,8 @@ class LinearProgrammingConfig:
                     lhs_str = "0"
                 else:
                     for j, val_a in enumerate(a_row):
+                        if val_a == 0:
+                            continue
                         var_name = f"x_{{{j+1}}}"
                         term_str = self._format_term_for_expression(val_a, var_name, first_written_constraint_term)
                         lhs_parts.append(term_str)
