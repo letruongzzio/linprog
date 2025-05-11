@@ -1,5 +1,15 @@
 # `linprog` - Linear Programming Problems Solver
 
+\[
+\begin{array}{|c|c|c|c|c|}
+\hline
+ & A & B & C & O \\ \hline
+(x_1,x_2) & (1.33333, 2.33333) & (6, 0) & (-0, 1) & (0, 0) \\ \hline
+z & 8.66667 & 18 & 2 & 0 \\ \hline
+\end{array}\]
+
+\textbf{Optimal Point}: B = (6.0, 0.0) with \(z^* = 18\).
+
 # Project Pipeline
 
 ```

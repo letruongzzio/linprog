@@ -1,0 +1,5 @@
+2025-05-11 16:06:27,798 - WARNING - solver - Invalid option 'coordinate'. Must be 'objective'.
+2025-05-11 16:06:40,439 - WARNING - solver - Invalid option 'coordinate'. Must be 'objective'.
+2025-05-11 16:06:49,735 - WARNING - solver - Invalid option 'coordinate'. Must be 'objective'.
+2025-05-11 16:29:00,367 - WARNING - configuration - Plotting is only supported for 2D problems.
+2025-05-11 16:29:09,740 - WARNING - solver - Plotting is disabled in the configuration.
